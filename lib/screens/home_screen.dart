@@ -1,3 +1,5 @@
+import 'package:covid19/config/palette.dart';
+import 'package:covid19/widgets/country_dropdown.dart';
 import 'package:covid19/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +11,53 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: CustomAppBar(),
       body: CustomScrollView(
         physics: ClampingScrollPhysics(),
-        slivers: <Widget>[],
+        slivers: <Widget>[
+          _buildHeader(screenHeight),
+        ],
       ),
+    );
+  }
+
+  SliverToBoxAdapter _buildHeader(double screenHeight) {
+    String _country = 'KOR';
+    return SliverToBoxAdapter(
+      child: Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Palette.primaryColor,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40.0),
+              bottomRight: Radius.circular(40.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              8Row(
+                children: <Widget>[
+                  Text(
+                    'COVID-19',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CountryDropdown(
+                    countries: ['CN', 'KR', 'FR', 'IN', 'IT', 'UK', 'USA'],
+                    country : _country,
+                    onChanged: (val) => setState(() => _country = val),
+                  ),
+                ],
+              ),
+            ],
+          )),
     );
   }
 }
